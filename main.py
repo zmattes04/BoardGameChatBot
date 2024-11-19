@@ -20,7 +20,7 @@ modelID = "anthropic.claude-v2:1"
 llm = Bedrock(
     model_id=modelID,
     client=bedrock_client,
-    model_kwargs={"max_tokens_to_sample": 2000, "temperature": 0.9}
+    model_kwargs={"max_tokens_to_sample": 200, "temperature": 0.9}
 
 )
 
@@ -35,4 +35,14 @@ def my_chatbot(language, freeform_text):
     response=bedrock_chain.invoke({'language': language, 'freeform_text': freeform_text})
     return response
 
-print(my_chatbot("English", "which country has the largest economy"))
+#print(my_chatbot("English", "which country has the largest economy"))
+
+st.title("Board Game Bob")
+
+language = st.sidebar.selectbox("Language", ["english", "spanish"])
+
+if language:
+    freeform_text = st.sidebar.text_area(label="what is your question?", max_chars=100)
+if freeform_text:
+    response = my_chatbot(language, freeform_text)
+    st.write(response['text'])
